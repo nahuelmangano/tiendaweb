@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+psycopg2-binary
+Werkzeug
+dotenv
+Flask-Mail
+Flask-Blueprints
+Flask-Migrate
+Flask-Login
