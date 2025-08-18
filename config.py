@@ -1,5 +1,7 @@
 import os
+import mercadopago
 from dotenv import load_dotenv
+
 
 load_dotenv()
 
@@ -22,3 +24,8 @@ class Config:
     # Uploads
     UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "app", "static", "uploads")
     ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+
+    #MP
+    MP_ACCESS_TOKEN = os.getenv("MP_ACCESS_TOKEN")
+    MP_PUBLIC_KEY = os.getenv("MP_PUBLIC_KEY")
+    mp = mercadopago.SDK(os.getenv("MP_ACCESS_TOKEN"))  # tu Access Token

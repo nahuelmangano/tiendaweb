@@ -2,8 +2,17 @@ from flask import Blueprint, render_template, redirect, url_for, flash, session,
 from app.models import db, Producto
 from app import mail
 from flask_mail import Message
+from config import Config
+import mercadopago
+import os
 
-tienda_bp = Blueprint("tienda", __name__)
+tienda_bp = Blueprint('tienda', __name__)
+
+# Config MercadoPago
+sdk = mercadopago.SDK(os.getenv("MP_ACCESS_TOKEN"))
+
+
+
 
 @tienda_bp.route("/tienda")
 def tienda():
@@ -45,19 +54,32 @@ def eliminar_carrito(producto_id):
 def comprar_carrito():
     email = request.form.get("email")
     carrito = session.get("carrito", [])
+
     if not carrito:
         flash("Tu carrito está vacío.", "warning")
         return redirect(url_for("tienda.ver_carrito"))
 
     productos_comprados = []
+    items_mp = []
+
     for item_id in carrito:
         producto = Producto.query.get(item_id)
         if producto and producto.stock > 0:
             producto.stock -= 1
             productos_comprados.append(producto)
+
+            # Agregar producto a la preferencia de MercadoPago
+            items_mp.append({
+                "title": producto.nombre,
+                "quantity": 1,
+                "unit_price": float(producto.precio),
+                "currency_id": "ARS"
+            })
+
     db.session.commit()
     session["carrito"] = []
 
+    # Enviar email con detalle de compra (opcional)
     if email:
         try:
             detalle = "\n".join(
@@ -67,10 +89,6 @@ def comprar_carrito():
                 f"Gracias por tu compra!\n\n"
                 f"Estos son los productos que elegiste:\n"
                 f"{detalle}\n\n"
-                "Pasos para pagar:\n"
-                "1. Realiza una transferencia a la cuenta XXXX.\n"
-                "2. Envía el comprobante a mangano.nahuel@gmail.com.\n"
-                "3. Una vez confirmado el pago, enviaremos tu pedido.\n\n"
                 "Saludos,\nEl equipo de Mi Tienda"
             )
             msg = Message(subject="Detalles de tu compra - Mi Tienda", recipients=[email], body=cuerpo)
@@ -81,4 +99,25 @@ def comprar_carrito():
     else:
         flash("Compra realizada con éxito!", "success")
 
+    # Crear preferencia en MercadoPago
+    if items_mp:
+        import mercadopago
+        sdk = mercadopago.SDK(os.getenv("MP_ACCESS_TOKEN"))
+
+        preference_data = {
+            "items": items_mp,
+            "payer": {"email": email} if email else {}
+        }
+        preference_response = sdk.preference().create(preference_data)
+        preference_id = preference_response["response"]["id"]
+
+        # Mostrar checkout con MercadoPago
+        # 🚀 Acá pasamos preference_id y public key al template
+    return render_template(
+        "checkout.html",
+        preference_id=preference_id,
+        PUBLIC_KEY=Config.MP_PUBLIC_KEY
+    )
+
     return redirect(url_for("tienda.tienda"))
+

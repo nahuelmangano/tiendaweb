@@ -47,7 +47,7 @@ def create_app():
     # Página de inicio
     @app.route("/")
     def index():
-        return render_template("index.html")
+        return render_template("tienda.html")
 
     # Crear tablas y roles
     with app.app_context():

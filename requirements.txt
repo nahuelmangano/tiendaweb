@@ -7,3 +7,4 @@ Flask-Mail
 Flask-Blueprints
 Flask-Migrate
 Flask-Login
+Mercadopago

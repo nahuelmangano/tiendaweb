@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Finalizar Compra</title>
+  <style>
+    /* Estilos base */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa, #e4ebf5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .checkout-container {
+      background: #ffffff;
+      padding: 40px 50px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .checkout-container:hover {
+      transform: translateY(-5px);
+    }
+
+    h2 {
+      color: #111827;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+
+    p {
+      color: #4b5563;
+      margin-bottom: 30px;
+      font-size: 1rem;
+    }
+
+    #wallet_container {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Animación sutil */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .checkout-container {
+      animation: fadeIn 0.6s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="checkout-container">
+    <h2>✨ ¡Casi Terminas Tu Compra!</h2>
+    <p>Presiona el botón para pagar de forma segura con MercadoPago.</p>
+
+    <!-- Contenedor del botón -->
+    <div id="wallet_container"></div>
+  </div>
+
+  <!-- SDK oficial de MercadoPago -->
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
+  <script>
+    const mp = new MercadoPago("{{ PUBLIC_KEY }}", {
+      locale: "es-AR"
+    });
+
+    mp.bricks().create("wallet", "wallet_container", {
+      initialization: {
+        preferenceId: "{{ preference_id }}"
+      },
+      customization: {
+        theme:'dark',
+        visual: {
+          style: {
+            buttonBackground: '#2563eb', // azul estilo Material
+            borderRadius: '12px',
+            textColor: '#ffffff',
+            padding: '14px 28px',
+            fontSize: '16px',
+            fontWeight: '600'
+          }
+        },
+        texts: {
+          action: '💳 Pagar ahora'
+        }
+      }
+    });
+  </script>
+</body>
+</html>
