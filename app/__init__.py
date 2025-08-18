@@ -3,6 +3,7 @@ from flask import Flask, render_template
 from flask_mail import Mail
 from dotenv import load_dotenv
 from .models import db, Role
+from flask import redirect, url_for
 
 mail = Mail()
 
@@ -47,7 +48,7 @@ def create_app():
     # Página de inicio
     @app.route("/")
     def index():
-        return render_template("tienda.html")
+       return redirect(url_for("tienda.tienda"))
 
     # Crear tablas y roles
     with app.app_context():
