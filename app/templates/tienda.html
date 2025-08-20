@@ -14,12 +14,12 @@
             <p class="precio">${{ "%.2f"|format(producto.precio) }}</p>
             <p class="descripcion">{{ producto.descripcion }}</p>
             <p>Talle: {{ producto.talle }}</p>
-            <p>{{ producto.stock }} disponibles</p>
-            {% if producto.stock == 0 %}
+            <p>{{ producto.stock_temporal }} disponibles</p>
+            {% if producto.stock_temporal == 0 %}
             <p>Agotado</p>
             {% endif %}
         </div>
-        {% if producto.stock > 0 %}
+        {% if producto.stock_temporal > 0 %}
         <div class="botones-producto">
             <a href="{{ url_for('tienda.agregar_carrito', producto_id=producto.id) }}">
                 <button class="btn-carrito">Agregar al carrito</button>

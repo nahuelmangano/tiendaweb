@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template,session
 from flask_mail import Mail
 from dotenv import load_dotenv
 from .models import db, Role
@@ -50,6 +50,10 @@ def create_app():
     def index():
        return redirect(url_for("tienda.tienda"))
 
+    @app.route("/reset_session")
+    def reset_session():
+        session.clear()
+        return "Sesión reseteada"    
     # Crear tablas y roles
     with app.app_context():
         db.create_all()
@@ -58,4 +62,9 @@ def create_app():
                 db.session.add(Role(name=role_name))
         db.session.commit()
 
+    @app.context_processor
+    def inject_carrito_count():
+        carrito = session.get("carrito", [])
+        cantidad = len(carrito)  # porque solo guardás IDs
+        return dict(carrito_count=cantidad)
     return app

@@ -104,3 +104,99 @@ header h1 {
     text-decoration: none; /* asegura que nunca haya subrayado */
     outline: none; /* quita el borde azul en algunos navegadores */
 }
+
+
+/* nuevo*/
+
+/* Título */
+.titulo {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Contenedor */
+.carrito-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Tabla */
+.tabla-carrito {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.tabla-carrito th, 
+.tabla-carrito td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-carrito th {
+    background-color: #222;
+    color: white;
+}
+
+/* Botones */
+button, .btn-volver {
+    background: #222;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+button:hover, .btn-volver:hover {
+    background: #444;
+}
+
+/* Botón eliminar */
+.btn-eliminar {
+    background: #d9534f;
+}
+
+.btn-eliminar:hover {
+    background: #c9302c;
+}
+
+/* Botón comprar */
+.btn-comprar {
+    background: #28a745;
+}
+
+.btn-comprar:hover {
+    background: #218838;
+}
+
+/* Input */
+.input-email {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+    width: 250px;
+}
+
+/* Total */
+.total {
+    font-size: 1.2rem;
+    margin: 15px 0;
+    text-align: right;
+}
+
+/* Carrito vacío */
+.vacio {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    margin: 30px 0;
+}

@@ -2,19 +2,22 @@
 {% block title %}Carrito{% endblock %}
 
 {% block content %}
-<h2>Carrito de Compras</h2>
+<h2 class="titulo">🛒 Carrito de Compras</h2>
 
 {% if productos %}
-<table>
+<div class="carrito-container">
+    <table class="tabla-carrito">
     <tr>
         <th>Producto</th>
-        <th>Precio</th>
+        <th>Cantidad</th>
+        <th>Subtotal</th>
         <th>Acciones</th>
     </tr>
     {% for producto in productos %}
     <tr>
         <td>{{ producto.nombre }}</td>
-        <td>${{ producto.precio }}</td>
+        <td>{{ producto.cantidad }}</td>
+        <td>${{ producto.precio * producto.cantidad }}</td>
         <td>
             <a href="{{ url_for('tienda.eliminar_carrito', producto_id=producto.id) }}">
                 <button>Eliminar</button>
@@ -23,17 +26,19 @@
     </tr>
     {% endfor %}
 </table>
+<p>Total: ${{ "%.2f"|format(total) }}</p>
 
-<p>Total: ${{ total }}</p>
+    
+  
 
-<form action="{{ url_for('tienda.comprar_carrito') }}" method="POST">
-    <input type="email" name="email" placeholder="Tu correo" required>
-    <button type="submit">Comprar</button>
-</form>
-
+    <form action="{{ url_for('tienda.comprar_carrito') }}" method="POST" class="form-compra">
+        <input type="email" name="email" placeholder="Tu correo" required class="input-email">
+        <button type="submit" class="btn-comprar">Comprar</button>
+    </form>
+</div>
 {% else %}
-<p>Tu carrito está vacío.</p>
+<p class="vacio">Tu carrito está vacío.</p>
 {% endif %}
 
-<a href="{{ url_for('tienda.tienda') }}">Seguir comprando</a>
+<a href="{{ url_for('tienda.tienda') }}" class="btn-volver">⬅ Seguir comprando</a>
 {% endblock %}
